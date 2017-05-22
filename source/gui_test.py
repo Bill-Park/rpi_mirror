@@ -4,6 +4,9 @@ class Application(tk.Frame):
     def __init__(self, master=None):
         tk.Frame.__init__(self, master)
         self.pack()
+        pad = 3
+        master.geometry("{0}x{1}+0+0".format(
+            master.winfo_screenwidth() - pad, master.winfo_screenheight() - pad))
         self.createWidgets()
 
     def createWidgets(self):
