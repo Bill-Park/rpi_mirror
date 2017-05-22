@@ -140,6 +140,7 @@ celerybeat-schedule
 .venv/
 venv/
 ENV/
+
 Scripts/
 
 # Spyder project settings
@@ -177,3 +178,4 @@ bin*/
 bill.py
 client_secret.json
 .credentials/
+*.lock
