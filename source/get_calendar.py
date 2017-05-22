@@ -41,7 +41,7 @@ def get_credentials():
 
     return credentials
 
-def main():
+def get_calendar_list() :
     """Shows basic usage of the Google Calendar API.
 
     Creates a Google Calendar API service object and outputs a list of the next
@@ -53,23 +53,27 @@ def main():
 
     #now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
     now = datetime.datetime.now(tz=pytz.timezone('Asia/Seoul')).isoformat() # 'Z' indicates UTC time
-    print(now)
-    print('test')
+    #print(now)
+    #print('test')
 
-    print('Getting the upcoming 10 events')
+    #print('Getting the upcoming 10 events')
     eventsResult = service.events().list(
-        calendarId='primary', timeMin=now, maxResults=10, singleEvents=True,
+        calendarId='primary', timeMin=now, maxResults=4, singleEvents=True,
         orderBy='startTime').execute()
-    events = eventsResult.get('items', [])
+    events_all = eventsResult.get('items', [])
 
-    if not events:
-        print('No upcoming events found.')
-    for event in events:
-        print(event)
-        start = event['start'].get('dateTime', event['start'].get('date'))
-        print(start, event['summary'])
+    if not events_all :
+        # print('No upcoming events found.')
+        return None
+
+    event_return = []
+    for event_part in events_all :
+        start = event_part['start'].get('dateTime', event_part['start'].get('date'))
+        event_info = [start[:10], start[11:16], event_part['summary']]
+        event_return.append(event_info)
+
+    return event_return
 
 
-
-if __name__ == '__main__':
-    main()
+#if __name__ == '__main__':
+#    main()
