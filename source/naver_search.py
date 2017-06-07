@@ -51,13 +51,15 @@ def get_naver_news() :
     soup = BeautifulSoup(html, 'html.parser')
 
     all_news_data = soup.select('#pan_today_main_news')
+    all_news_title = []
 
     for top_news in all_news_data :
         for news in top_news.select('.newsnow_tx_inner') :
             news_title = news.text.strip('\n')
-            if news_title != '영상' :
-                print(news_title)
-
+            if news_title != '영상' and not '생중계' in news_title :
+                all_news_title.append(news_title)
+                #print(news_title)
+    return all_news_title
 
 if __name__ == '__main__':
     get_naver_news()
