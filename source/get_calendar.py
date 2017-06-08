@@ -72,6 +72,7 @@ def get_calendar_list() :
         event_info = [start[:10], start[11:16], event_part['summary']]
         event_return.append(event_info)
 
+    event_return.reverse()
     return event_return
 
 
