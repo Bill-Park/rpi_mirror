@@ -13,7 +13,21 @@ ny = "&ny=76"
 numOfRows="&numOfRows=100"
 type = "&_type=json"
 
-['0200', '0500', '0800', '1100', '1400', '1700', '2000', '2300']
+#['0200', '0500', '0800', '1100', '1400', '1700', '2000', '2300']
+api_time = [2, 5, 8, 11, 14, 17, 20, 23]
+
+def get_api_data() :
+    time_now = datetime.datetime.now(tz=pytz.timezone('Asia/Seoul')).strftime('%H')
+    check_time = int(time_now) - 1
+    while not check_time in api_time :
+        check_time -= 1
+        if check_time == 1 :
+            check_time = 23
+
+    print(check_time in api_time)
+    print(check_time)
+
+
 
 def get_weather_data() :
     api_url = url + key + date + time + nx + ny + numOfRows + type
@@ -29,17 +43,20 @@ def get_dust_data() :
     key = "&ServiceKey=" + bill.key
     type = "&_type=json"
 
-    now = datetime.datetime.now(tz=pytz.timezone('Asia/Seoul')).isoformat()  # get Seoul time
+    #now = datetime.datetime.now(tz=pytz.timezone('Asia/Seoul')).isoformat()  # get Seoul time
+    time_now = datetime.datetime.now(tz=pytz.timezone('Asia/Seoul')).strftime('%H')
+    print(int(time_now)-1)
 
     #date = date + str(now[:10]).replace('-', '')
     #time = time + str(now[11:13]) + "00"
 
-    api_url = url + sido + term + key + type
-    print(api_url)
+    #api_url = url + sido + term + key + type
+    #print(api_url)
 
 
 
 if __name__ == '__main__':
     #get_weather_data()
-    get_dust_data()
+    #get_dust_data()
+    get_api_data()
 
