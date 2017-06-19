@@ -2,6 +2,7 @@ import urllib.request
 import bill
 import pytz
 import datetime
+import string
 
 
 url = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastSpaceData?"
@@ -19,14 +20,19 @@ api_time = [2, 5, 8, 11, 14, 17, 20, 23]
 def get_api_data() :
     time_now = datetime.datetime.now(tz=pytz.timezone('Asia/Seoul')).strftime('%H')
     check_time = int(time_now) - 1
+    day_calibrate = 0
     while not check_time in api_time :
         check_time -= 1
-        if check_time == 1 :
+        if check_time < 2 :
+            day_calibrate = 1
             check_time = 23
 
     print(check_time in api_time)
     print(check_time)
 
+    date_now = datetime.datetime.now(tz=pytz.timezone('Asia/Seoul')).strftime('%Y%m%d')
+    check_date = int(date_now) - day_calibrate
+    print(str(check_date))
 
 
 def get_weather_data() :
