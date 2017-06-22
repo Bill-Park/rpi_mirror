@@ -41,8 +41,8 @@ def get_api_data() :
 
 def get_weather_data() :
     api_date, api_time = get_api_data()
-    print(api_date)
-    print(api_time)
+    #print(api_date)
+    #print(api_time)
     url = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastSpaceData?"
     key = "serviceKey=" + bill.key
     date = "&base_date=" + api_date
@@ -53,23 +53,26 @@ def get_weather_data() :
     type = "&_type=json"
 
     api_url = url + key + date + time + nx + ny + numOfRows + type
-    print(api_url)
 
     data = urllib.request.urlopen(api_url).read().decode('utf8')
     parsed_json = json.loads(data)['response']['body']['items']['item']
-    print(parsed_json)
+
     target_date = parsed_json[0]['fcstDate']
     target_time = parsed_json[0]['fcstTime']
-    print(target_date)
-    print(target_time)
+    date_calibrate = target_date
+    if target_time > '1300' :
+        date_calibrate = str(int(target_date) + 1)
+
+    passing_data = {}
     for one_parsed in parsed_json :
         if one_parsed['fcstDate'] == target_date and one_parsed['fcstTime'] == target_time :
-            print(one_parsed['category'], one_parsed['fcstValue'])
+            #print(one_parsed['category'], one_parsed['fcstValue'])
+            passing_data[one_parsed['category']] = one_parsed['fcstValue']
 
-        if one_parsed['fcstDate'] == target_date and one_parsed['category'] == 'TMX':
-            print('highest temp : ' + str(one_parsed['fcstValue']))
-        elif one_parsed['fcstDate'] == target_date and one_parsed['category'] == 'TMN':
-            print('lowest temp : ' + str(one_parsed['fcstValue']))
+        if one_parsed['fcstDate'] == date_calibrate and (one_parsed['category'] == 'TMX' or one_parsed['category'] == 'TMN') :
+            passing_data[one_parsed['category']] = one_parsed['fcstValue']
+
+    return passing_data
 
 
 

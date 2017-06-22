@@ -6,6 +6,7 @@ import get_calendar
 import naver_search
 import pytz
 import datetime
+import get_api
 import time
 
 class Application(tk.Frame):
@@ -21,11 +22,13 @@ class Application(tk.Frame):
         self.calendar_list = tk.Text(self.master, background="black", bd=0, foreground="white")
         self.naver_lank = tk.Text(self.master, background="black", bd=0, foreground="white")
         self.time_now_show = tk.Text(self.master, background="black", bd=0, foreground="white")
+        self.weather_show = tk.Text(self.master, background="black", bd=0, foreground="white")
         #self.news_show = tk.Text(self.master)
         self.create_calendar()
         self.create_naver_lank()
         #self.create_news()
         self.create_time()
+        self.create_weather()
 
 
     def create_calendar(self) :
@@ -76,6 +79,28 @@ class Application(tk.Frame):
             self.naver_lank.insert(tk.END, str(lank_num) + ' ' + naver_lank_list + '\n')
 
         self.master.after(15000, self.naver_lank_change)  # it'll call itself continuously
+
+    def create_weather(self) :
+        weather_data = get_api.get_weather_data()
+        print(weather_data)
+        pty2string = {0: "맑음",
+                      1: "비",
+                      2: "진눈개비",
+                      3: "눈",
+                      }
+        print(pty2string[weather_data['PTY']])
+        if weather_data['PTY'] > 0 :
+            print("강수확률 : " + str(weather_data['POP']) + "%")
+
+        '''
+        self.weather_show.config(height=len(calendar_data), width=30)
+        self.weather_show.place(x=self.screen_width - 250, y=100)
+
+        for text_calendar_list in calendar_data:
+            text_calendar = text_calendar_list[0] + ' ' + text_calendar_list[1] + ' ' + text_calendar_list[2] + '\n'
+            self.calendar_list.insert('1.0', text_calendar)
+        '''
+
 
 
 
