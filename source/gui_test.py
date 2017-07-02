@@ -81,16 +81,28 @@ class Application(tk.Frame):
         self.master.after(15000, self.naver_lank_change)  # it'll call itself continuously
 
     def create_weather(self) :
-        weather_data = get_api.get_weather_data()
-        print(weather_data)
+        weather, forecast_date, forecast_tm_date, forecast_time= get_api.get_weather_data()
+        print(weather)
+        forecast_y = str(int(forecast_date / 10000))
+        forecast_m = str(int((forecast_date % 10000) / 100))
+        forecast_d = str(int(forecast_date % 100))
+
+        print(forecast_y + "년 " + forecast_m + "월 " + forecast_d + "일 일기예보")
+
         pty2string = {0: "맑음",
                       1: "비",
                       2: "진눈개비",
                       3: "눈",
                       }
-        print(pty2string[weather_data['PTY']])
-        if weather_data['PTY'] > 0 :
-            print("강수확률 : " + str(weather_data['POP']) + "%")
+        print("내일 날씨 : " + pty2string[weather['PTY']])
+        if weather['PTY'] > 0 :
+            print("강수확률 : " + str(weather['POP']) + "%")
+
+        print("현재 기온 : " + str(weather['T3H']) + '℃')
+        print("현재 습도 : " + str(weather['REH']) + '%')
+        print(forecast_m + "월 " + forecast_d + "일 최저 기온 : " + str(weather['TMN']) + '℃')
+        print(forecast_m + "월 " + forecast_d + "일 최고 기온 : " + str(weather['TMX']) + '℃')
+
 
         '''
         self.weather_show.config(height=len(calendar_data), width=30)
@@ -100,7 +112,6 @@ class Application(tk.Frame):
             text_calendar = text_calendar_list[0] + ' ' + text_calendar_list[1] + ' ' + text_calendar_list[2] + '\n'
             self.calendar_list.insert('1.0', text_calendar)
         '''
-
 
 
 
