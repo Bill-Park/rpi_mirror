@@ -48,8 +48,8 @@ def get_weather_data() :
     key = "serviceKey=" + bill.key
     date = "&base_date=" + api_date
     time = "&base_time=" + api_time
-    nx = "&nx=97"
-    ny = "&ny=76"
+    nx = "&nx=59"
+    ny = "&ny=126"
     numOfRows = "&numOfRows=100"
     type = "&_type=json"
 
@@ -70,6 +70,8 @@ def get_weather_data() :
 
 
     passing_data = {}
+    pop_am = {}
+    pop_pm = {}
     for one_parsed in parsed_json :
         if one_parsed['fcstDate'] == target_date and one_parsed['fcstTime'] == target_time :
             #print(one_parsed['category'], one_parsed['fcstValue'])
@@ -78,9 +80,26 @@ def get_weather_data() :
         if one_parsed['fcstDate'] == calibrated_date and (one_parsed['category'] == 'TMX' or one_parsed['category'] == 'TMN') :
             passing_data[one_parsed['category']] = one_parsed['fcstValue']
 
+        if one_parsed['fcstDate'] == target_date and one_parsed['category'] == 'POP':
+            if int(one_parsed['fcstTime']) < 1200 :
+                pop_am[one_parsed['fcstTime']] = one_parsed['fcstValue']
+            else :
+                pop_pm[one_parsed['fcstTime']] = one_parsed['fcstValue']
+
+
+            #print(str(one_parsed['fcstValue']) + " " + str(one_parsed['fcstTime']))
+
+    print(pop_am)
+    print(pop_pm)
+    highest_in_dict(pop_am)
+
     return passing_data, target_date, calibrated_date, target_time
 
-
+def highest_in_dict(target_list) :
+    max = 0
+    print(target_list.values())
+    #for target in target_list :
+    #    print(target.items())
 
 def get_dust_data() :
     url = "http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getCtprvnMesureSidoLIst?"

@@ -1,28 +1,17 @@
-from datetime import datetime
-from urllib.request import urlopen
-from bs4 import BeautifulSoup
+dict_first = {}
+dict_second = {}
+dict_test = {}
+dict_target = {'1':1, '10':10, '100' : 100}
 
-def get_raw_data():
-    now = datetime.now()
-    today_str = "{:04d}-{:02d}-{:02d}".format(now.year, now.month, now.day)
-    g_URL = "http://www.airkorea.or.kr/sido_compare_p01?itemCode=10007&ymd={}%2023&areaCode=031".format(today_str)
-    html_str = urlopen(g_URL).read().decode('utf-8')
-    return html_str
+if int(dict_target['1']) == 1 :
+    dict_test[dict_target['1']] = 2
+else :
+    dict_test[dict_target['1']] = 20
 
-def get_data_where(location_):
-    html = get_raw_data()
-    soup = BeautifulSoup(html)
-    trs = [tr for tr in soup.find_all('tr') if location_ in tr.text]
-    if trs:
-        data = [x for x in trs[0].text.strip().split('n')]
-        data[1:] = [int(x) for x in data[1:] if x != '-']
-        return data
-    return None
+print(dict_test)
+print(dict_target)
 
-def print_data_where(location_):
-    data = get_data_where(location_)
-    for i, d in enumerate(data[1:]):
-        print("{}시: {}".format(i+1, d))
-
-
-print_data_where("통진")
+'''
+{'0600': 30, '0000': 20, '0300': 30, '0900': 30}
+{1200: 60, 1800: 70, 1500: 70, 2100: 60}
+'''
